@@ -1,6 +1,6 @@
 from models.input import EmailInput
 from pipeline.decide import make_decision
-
+from pipeline.classify import classify_email
 
 def main():
     # 1. Simulate an incoming email
@@ -10,19 +10,15 @@ def main():
         body="Hello, we already paid invoice INV-123 last week. Please check."
     )
 
-    # 2. Simulated AI outputs (hardcoded for now)
-    case_type = "PAYMENT_ISSUE"
-    confidence = 0.9
-    invoice_ids = ["INV-123"]
-    amount = None
-    rationale = "Customer claims invoice already paid"
+    # 2. Classify the email
+    case_type, confidence, rationale = classify_email(email)
 
     # 3. Run decision logic
     decision = make_decision(
         case_type=case_type,
         confidence=confidence,
-        invoice_ids=invoice_ids,
-        amount=amount,
+        invoice_ids=["INV-123"],
+        amount=None,
         rationale=rationale,
     )
 
