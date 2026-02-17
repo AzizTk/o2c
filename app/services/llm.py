@@ -1,23 +1,27 @@
 import os
-import google.generativeai as genai
+from cerebras.cloud.sdk import Cerebras
 
 
-def get_gemini_model():
-    api_key = os.getenv("GEMINI_API_KEY")
+def get_cerebras_client() -> Cerebras:
+    api_key = os.getenv("CEREBRAS_API_KEY")
     if not api_key:
-        raise RuntimeError("GEMINI_API_KEY is not set")
+        raise RuntimeError("CEREBRAS_API_KEY is not set")
 
-    genai.configure(api_key=api_key)
-
-    return genai.GenerativeModel(
-        model_name="gemini-2.5-flash"
-    )
+    return Cerebras(api_key=api_key)
 
 
 def call_llm(prompt: str) -> str:
     """
-    Calls Gemini with a prompt and returns raw text output.
+    Calls Cerebras with a prompt and returns raw text output.
     """
-    model = get_gemini_model()
-    response = model.generate_content(prompt)
-    return response.text
+    client = get_cerebras_client()
+
+    response = client.chat.completions.create(
+        model="llama3.1-8b",
+        messages=[
+            {"role": "user", "content": prompt}
+        ],
+        temperature=0.2,
+    )
+
+    return response.choices[0].message.content

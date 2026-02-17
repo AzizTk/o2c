@@ -2,10 +2,17 @@ import json
 import re
 from models.input import EmailInput
 from services.llm import call_llm
-
+from dataclasses import dataclass
+from typing import Literal
 
 ALLOWED_CASES = {"PAYMENT_ISSUE", "DEDUCTION", "DISPUTE", "UNKNOWN"}
 
+@dataclass
+class ClassificationResult:
+    case_type: Literal["PAYMENT_ISSUE", "DEDUCTION", "DISPUTE", "UNKNOWN"]
+    confidence: float
+    rationale: str
+    raw_llm_output: str
 
 
 def extract_json(raw: str) -> dict:
@@ -18,16 +25,8 @@ def extract_json(raw: str) -> dict:
         raise ValueError("No JSON object found in LLM output")
     return json.loads(match.group())
 
-def classify_email(email: EmailInput) -> tuple[str, float, str]:
-    """Classifies the email and returns a tuple of (case_type, confidence, rationale).
-    args:
-    - email: EmailInput object containing subject and body of the email.
-    returns:
-    - case_type: One of PAYMENT_ISSUE, DEDUCTION, DISPUTE, UNKNOWN
-    - confidence: A float between 0 and 1 indicating the model's confidence in the classification.
-    - rationale: A short explanation of why the model classified the email as it did.
-    """
 
+def classify_email(email: EmailInput) -> ClassificationResult:
     prompt = f"""
 You are classifying customer finance emails.
 Classify the email into exactly one of:
@@ -46,28 +45,23 @@ Subject: {email.subject}
 Body: {email.body}
 """
 
-    try:
-        raw = call_llm(prompt)
-        print("\n--- RAW LLM RESPONSE ---")
-        print(raw)
-        print("--- END RAW RESPONSE ---\n")
+    raw = call_llm(prompt)
+    data = extract_json(raw)
 
-        data = extract_json(raw)
+    case_type = data.get("case_type", "UNKNOWN")
+    confidence = float(data.get("confidence", 0.0))
+    rationale = data.get("rationale", "No rationale provided")
 
-        case_type = data.get("case_type", "UNKNOWN")
-        confidence = float(data.get("confidence", 0.0))
-        rationale = data.get("rationale", "No rationale provided")
+    if case_type not in ALLOWED_CASES:
+        case_type = "UNKNOWN"
+        confidence = 0.5
+        rationale = "Invalid case_type from model"
 
-        if case_type not in ALLOWED_CASES:
-            case_type = "UNKNOWN"
-            confidence = 0.5
-            rationale = "Invalid case_type from model"
+    return ClassificationResult(
+        case_type=case_type,
+        confidence=confidence,
+        rationale=rationale,
+        raw_llm_output=raw,
+    )
 
-        return case_type, confidence, rationale
-
-    except Exception as e:
-        print("\n--- LLM ERROR ---")
-        print(type(e), e)
-        print("--- END LLM ERROR ---\n")
-        raise
 
