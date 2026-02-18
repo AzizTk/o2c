@@ -1,0 +1,10 @@
+{
+  "customer": "ap@valuepluswholesale.eu",
+  "invoice_ids": [
+    "INV-10001"
+  ],
+  "amount": null,
+  "currency": null,
+  "dispute_reason": "promo deduction",
+  "raw_llm_output": "{\n  \"customer\": \"ap@valuepluswholesale.eu\",\n  \"invoice_ids\": [\"INV-10001\"],\n  \"amount\": null,\n  \"currency\": null,\n  \"dispute_reason\": \"promo deduction\"\n}"
+}

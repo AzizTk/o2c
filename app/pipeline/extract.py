@@ -9,6 +9,7 @@ from utils.json import extract_json
 
 @dataclass
 class ExtractionResult:
+    customer: Optional[str]
     invoice_ids: List[str]
     amount: Optional[float]
     currency: Optional[str]
@@ -30,27 +31,35 @@ Extract the following fields when present:
 - amount (number or null)
 - currency (string or null)
 - dispute_reason (string or null)
+- customer 
 
 Return ONLY valid JSON in this format:
 {{
+  "customer": "customer name or identifier/email",
   "invoice_ids": [],
   "amount": null,
   "currency": null,
   "dispute_reason": null
 }}
 
-Email:
+Email:   {email.sender}
 Subject: {email.subject}
 Body: {email.body}
 """
+    for attempt in range(2):
+        raw = call_llm(prompt)
+        try:
+            data = extract_json(raw)
 
-    raw = call_llm(prompt)
-    data = extract_json(raw)
+            return ExtractionResult(
+                invoice_ids=data.get("invoice_ids", []),
+                amount=data.get("amount"),
+                currency=data.get("currency"),
+                dispute_reason=data.get("dispute_reason"),
+                customer=data.get("customer"),
+                raw_llm_output=raw,
+            )
+        except Exception:
+            if attempt == 1:
+                raise
 
-    return ExtractionResult(
-        invoice_ids=data.get("invoice_ids", []),
-        amount=data.get("amount"),
-        currency=data.get("currency"),
-        dispute_reason=data.get("dispute_reason"),
-        raw_llm_output=raw,
-    )

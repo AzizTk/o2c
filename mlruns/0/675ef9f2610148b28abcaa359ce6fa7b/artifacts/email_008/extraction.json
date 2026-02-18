@@ -1,0 +1,10 @@
+{
+  "customer": "ap@urbanfoods.com",
+  "invoice_ids": [
+    "INV-10007"
+  ],
+  "amount": null,
+  "currency": null,
+  "dispute_reason": null,
+  "raw_llm_output": "{\n  \"customer\": \"ap@urbanfoods.com\",\n  \"invoice_ids\": [\"INV-10007\"],\n  \"amount\": null,\n  \"currency\": null,\n  \"dispute_reason\": null\n}"
+}

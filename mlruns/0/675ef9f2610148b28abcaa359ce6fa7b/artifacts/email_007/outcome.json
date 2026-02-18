@@ -1,0 +1,7 @@
+{
+  "email_id": "email_007",
+  "status": "processed",
+  "queue": "Cash Application",
+  "confidence": 0.98,
+  "case_type": "Payment Claim"
+}

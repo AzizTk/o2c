@@ -1,0 +1,6 @@
+{
+  "case_type": "General AR Request",
+  "confidence": 0.99,
+  "rationale": "The email requests a statement of account, which falls under general AR information requests.",
+  "Recommended next step": "Route to AR Support for manual review"
+}

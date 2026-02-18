@@ -17,7 +17,7 @@ def call_llm(prompt: str) -> str:
     client = get_cerebras_client()
 
     response = client.chat.completions.create(
-        model="llama3.1-8b",
+        model="gpt-oss-120b",
         messages=[
             {"role": "user", "content": prompt}
         ],

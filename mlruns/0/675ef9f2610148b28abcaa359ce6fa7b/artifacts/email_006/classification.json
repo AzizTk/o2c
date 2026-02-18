@@ -1,0 +1,6 @@
+{
+  "case_type": "Dispute",
+  "confidence": 0.97,
+  "rationale": "Customer reports unit price mismatch with the agreed PO, indicating an invoice dispute.",
+  "Recommended next step": "Route to Disputes team"
+}

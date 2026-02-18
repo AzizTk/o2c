@@ -1,0 +1,10 @@
+{
+  "customer": "ap@freshmart.com",
+  "invoice_ids": [
+    "INV-10000"
+  ],
+  "amount": null,
+  "currency": null,
+  "dispute_reason": null,
+  "raw_llm_output": "{\n  \"customer\": \"ap@freshmart.com\",\n  \"invoice_ids\": [\"INV-10000\"],\n  \"amount\": null,\n  \"currency\": null,\n  \"dispute_reason\": null\n}"
+}

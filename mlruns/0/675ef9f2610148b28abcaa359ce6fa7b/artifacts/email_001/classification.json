@@ -1,0 +1,6 @@
+{
+  "case_type": "Payment Claim",
+  "confidence": 0.99,
+  "rationale": "Customer explicitly states they have transferred payment for invoice INV-10000 and asks for it to be applied.",
+  "Recommended next step": "Route to Cash Application queue"
+}

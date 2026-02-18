@@ -1,0 +1,10 @@
+{
+  "customer": "ap@northretail.com",
+  "invoice_ids": [
+    "INV-10004"
+  ],
+  "amount": null,
+  "currency": null,
+  "dispute_reason": null,
+  "raw_llm_output": "{\n  \"customer\": \"ap@northretail.com\",\n  \"invoice_ids\": [\"INV-10004\"],\n  \"amount\": null,\n  \"currency\": null,\n  \"dispute_reason\": null\n}"
+}

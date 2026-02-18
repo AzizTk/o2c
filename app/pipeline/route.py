@@ -6,10 +6,10 @@ def route_email(classification: ClassificationResult) -> str:
     Routes an email to the correct queue based on classification.
     """
 
-    if classification.case_type == "PAYMENT_ISSUE":
+    if classification.case_type == "Payment Claim":
         return "Cash Application"
 
-    if classification.case_type in {"DEDUCTION", "DISPUTE"}:
+    if classification.case_type == "Dispute":
         return "Disputes"
 
     # UNKNOWN or anything else

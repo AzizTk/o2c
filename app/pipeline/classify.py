@@ -5,11 +5,11 @@ from services.llm import call_llm
 from dataclasses import dataclass
 from typing import Literal
 
-ALLOWED_CASES = {"PAYMENT_ISSUE", "DEDUCTION", "DISPUTE", "UNKNOWN"}
+ALLOWED_CASES = {"Payment Claim", "Dispute", "General AR Request"}
 
 @dataclass
 class ClassificationResult:
-    case_type: Literal["PAYMENT_ISSUE", "DEDUCTION", "DISPUTE", "UNKNOWN"]
+    case_type: Literal["Payment Claim", "Dispute", "General AR Request"]
     confidence: float
     rationale: str
     raw_llm_output: str
@@ -30,15 +30,16 @@ def classify_email(email: EmailInput) -> ClassificationResult:
     prompt = f"""
 You are classifying customer finance emails.
 Classify the email into exactly one of:
-- PAYMENT_ISSUE
-- DEDUCTION
-- DISPUTE
-- UNKNOWN
+    1. Payment Claim (customer says they paid)
+    2. Dispute (customer claims an issue / short pay / wrong invoice)
+    3. General AR Request (copy of invoice, statement request, change billing details)
+Each case should include a recommended next step.
 Return ONLY valid JSON in this format:
 {{
   "case_type": "ONE_OF_THE_ABOVE",
   "confidence": number between 0 and 1,
   "rationale": "short explanation"
+  "Recommended next step: (e.g. 'Route to Cash Application queue', 'Route to Disputes team', 'Route to AR Support for manual review')"
 }}
 Email:
 Subject: {email.subject}

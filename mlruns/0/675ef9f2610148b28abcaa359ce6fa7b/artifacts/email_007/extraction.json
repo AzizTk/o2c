@@ -1,0 +1,10 @@
+{
+  "customer": "billing@supergrocer.fr",
+  "invoice_ids": [
+    "INV-10006"
+  ],
+  "amount": null,
+  "currency": null,
+  "dispute_reason": null,
+  "raw_llm_output": "{\n  \"customer\": \"billing@supergrocer.fr\",\n  \"invoice_ids\": [\"INV-10006\"],\n  \"amount\": null,\n  \"currency\": null,\n  \"dispute_reason\": null\n}"
+}

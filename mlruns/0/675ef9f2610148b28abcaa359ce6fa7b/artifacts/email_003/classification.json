@@ -1,0 +1,6 @@
+{
+  "case_type": "Payment Claim",
+  "confidence": 0.97,
+  "rationale": "The sender explicitly states that payment has been initiated and asks for it to be booked.",
+  "Recommended next step": "Route to Cash Application queue"
+}

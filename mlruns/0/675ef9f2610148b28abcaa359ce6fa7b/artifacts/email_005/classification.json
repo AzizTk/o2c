@@ -1,0 +1,6 @@
+{
+  "case_type": "General AR Request",
+  "confidence": 0.94,
+  "rationale": "The email is asking for proof of delivery to release a payment, not claiming a payment was made or disputing an invoice.",
+  "recommended_next_step": "Route to AR Support for manual review and provide the requested POD"
+}
