@@ -19,6 +19,11 @@ def extract_json(raw: str) -> dict:
     """
     Extract the first JSON object from an LLM response.
     Handles markdown fences and extra text.
+        args:
+            raw: The raw string output from the LLM, which may contain markdown fences and extra text.
+
+        returns:
+            A dictionary parsed from the first JSON object found in the input string.
     """
     match = re.search(r"\{.*\}", raw, re.DOTALL)
     if not match:
@@ -27,6 +32,16 @@ def extract_json(raw: str) -> dict:
 
 
 def classify_email(email: EmailInput) -> ClassificationResult:
+
+    """Classifies an email into a case type with confidence.
+
+        args:
+            email: EmailInput object containing subject and body
+            
+        returns:
+            ClassificationResult with case_type, confidence, rationale, and raw LLM output
+        
+    """
     prompt = f"""
 You are classifying customer finance emails.
 Classify the email into exactly one of:

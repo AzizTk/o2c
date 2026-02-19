@@ -11,6 +11,14 @@ def generate_draft_response(
 ) -> str:
     """
     Generates a draft email response for human review.
+
+    args:
+    email: EmailInput object containing sender, subject, and body
+    classification: ClassificationResult object containing case_type and confidence
+    extracted: ExtractionResult object containing extracted fields
+
+    returns:
+    A string containing the draft email body text.
     """
 
     prompt = f"""

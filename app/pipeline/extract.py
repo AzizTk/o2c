@@ -22,6 +22,16 @@ def extract_fields(
     classification: ClassificationResult,
     MAX_LLM_RETRIES : int
 ) -> ExtractionResult:
+    """Extracts structured fields from an email based on its classification.
+
+        args:
+            email: EmailInput object containing sender, subject, and body
+            classification: ClassificationResult object containing case_type and confidence
+            MAX_LLM_RETRIES: int, number of times to retry LLM call if JSON extraction fails
+
+        returns:
+            ExtractionResult with extracted fields and raw LLM output
+    """
     prompt = f"""
 You are extracting structured finance information from a customer email.
 
