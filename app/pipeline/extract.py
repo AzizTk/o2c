@@ -20,6 +20,7 @@ class ExtractionResult:
 def extract_fields(
     email: EmailInput,
     classification: ClassificationResult,
+    MAX_LLM_RETRIES : int
 ) -> ExtractionResult:
     prompt = f"""
 You are extracting structured finance information from a customer email.
@@ -46,7 +47,7 @@ Email:   {email.sender}
 Subject: {email.subject}
 Body: {email.body}
 """
-    for attempt in range(2):
+    for attempt in range(MAX_LLM_RETRIES):
         raw = call_llm(prompt)
         try:
             data = extract_json(raw)
@@ -60,6 +61,6 @@ Body: {email.body}
                 raw_llm_output=raw,
             )
         except Exception:
-            if attempt == 1:
+            if attempt == MAX_LLM_RETRIES - 1:
                 raise
 

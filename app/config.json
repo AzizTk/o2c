@@ -1,0 +1,6 @@
+{
+  "enable_drafts": true,
+  "draft_confidence_threshold": 0.8,
+  "log_level": "INFO",
+  "Max_LLM_Retries": 2
+}

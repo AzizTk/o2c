@@ -1,6 +1,0 @@
-{
-  "case_type": "General AR Request",
-  "confidence": 0.99,
-  "rationale": "The email requests a resend of an invoice copy, which is a standard AR information request.",
-  "Recommended next step": "Route to AR Support for manual review"
-}

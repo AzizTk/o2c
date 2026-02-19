@@ -1,6 +1,7 @@
 import logging
 import mlflow
 import json
+from pathlib import Path
 from dataclasses import asdict
 from loaders.json_loaders import load_emails_from_json
 from pipeline.classify import classify_email
@@ -8,12 +9,21 @@ from pipeline.extract import extract_fields
 from pipeline.draft import generate_draft_response
 from pipeline.route import route_email
 
-#TODO: fix llm json output, make sure the error doesnt happen
 HUMAN_REVIEW_QUEUE = "AR Support"
+
+CONFIG_PATH = Path(__file__).parent / "config.json"
+
+with open(CONFIG_PATH) as f:
+    config = json.load(f)
+
+ENABLE_DRAFTS = config.get("enable_drafts")
+DRAFT_CONFIDENCE_THRESHOLD = config.get("draft_confidence_threshold")
+LOG_LEVEL = config.get("log_level")
+MAX_LLM_RETRIES = config.get("Max_LLM_Retries")
 
 # ---------- Logging setup ----------
 logging.basicConfig(
-    level=logging.INFO,
+    level=getattr(logging, LOG_LEVEL.upper(), logging.INFO),
     format="%(asctime)s | %(levelname)s | %(message)s",
 )
 logger = logging.getLogger(__name__)
@@ -57,7 +67,7 @@ def main():
                 )
                 # ---------- Step 3: Extract ----------
                 logger.info(f"(Email {idx} | {email_id}) STEP 3/5 — Extracting fields")
-                extracted = extract_fields(email, classification)
+                extracted = extract_fields(email, classification, MAX_LLM_RETRIES)
                 logger.info(
                     f"(Email {idx} | {email_id}) Extracted "
                     f"invoices={extracted.invoice_ids}, amount={extracted.amount}"
@@ -66,10 +76,10 @@ def main():
                     json.dumps(asdict(extracted), indent=2),
                     artifact_file=f"{email_id}/extraction.json",
                 )
-                # ---------- Step 4: Draft (skipped) ----------
-                draft = None
+                # ---------- Step 4: Draft ----------
+                draft = ENABLE_DRAFTS
 
-                if classification.confidence >= 0.8: # Needs fine-tuning based on use case
+                if classification.confidence >= DRAFT_CONFIDENCE_THRESHOLD: 
                     logger.info(
                         f"(Email {idx} | {email_id}) STEP 4/5 — Generating draft response"
                     )

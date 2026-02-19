@@ -1,6 +1,0 @@
-{
-  "case_type": "Payment Claim",
-  "confidence": 0.98,
-  "rationale": "Customer states they have made a payment and asks for confirmation of receipt.",
-  "Recommended next step": "Route to Cash Application queue"
-}
