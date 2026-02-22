@@ -1,0 +1,51 @@
+To run the pipeline:
+pip install -r requirements.txt
+
+# O2C Email Intelligence Pipeline
+
+This project is a simplified AI-assisted pipeline for processing Order-to-Cash (O2C) customer emails.
+It classifies incoming emails, extracts relevant financial information, optionally drafts a response,
+and routes each case to the appropriate Accounts Receivable queue with human-in-the-loop safeguards.
+
+The system is designed to handle messy, unstructured finance emails while remaining auditable and safe.
+
+---
+
+## What the system does
+
+For each incoming email, the pipeline:
+
+1. Ingests email data from JSON
+2. Classifies the email intent using an LLM
+3. Extracts structured fields (invoice IDs, amounts, dispute details)
+4. Optionally generates a draft response email
+5. Routes the case to the correct AR queue
+6. Logs all decisions and artifacts to MLflow for auditability
+
+Low-confidence or ambiguous cases are automatically routed to human review.
+
+---
+
+## Architecture Overview
+
+- **Classification**: Determines email intent (Payment, Deduction, Dispute, Unknown)
+- **Extraction**: Pulls structured financial data from unstructured text
+- **Drafting**: Generates a suggested reply (never auto-sent)
+- **Routing**: Applies business rules to determine the correct queue
+- **Observability**: MLflow logs per-email artifacts and batch-level metrics
+
+The system prioritizes safety over automation in all uncertain cases.
+
+---
+
+## Project Structure
+
+app/
+├── main.py # Pipeline orchestration
+├── config.json # Runtime configuration
+├── loaders/ # Email ingestion
+├── pipeline/ # Classification, extraction, routing, drafting
+├── services/ # LLM client
+├── models/ # Input / output data models
+├── utils/ # JSON helpers
+└── sample_emails.json # Example input data

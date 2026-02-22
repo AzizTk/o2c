@@ -1,0 +1,11 @@
+# Core runtime
+python-dotenv>=1.0.0
+
+# LLM client (Cerebras)
+cerebras-cloud-sdk>=1.3.0
+
+# Data models & validation
+pydantic>=2.6.0
+
+# Experiment tracking / observability
+mlflow>=2.10.0
